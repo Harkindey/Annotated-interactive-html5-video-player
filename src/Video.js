@@ -27,6 +27,7 @@ class Video extends Component {
         this.vid = null;
         this.canvas = null;
         this.ssContainer = null;
+        this.noneVid = null
         this.state = {
             duration: 0,
             progress: 0,
@@ -41,9 +42,9 @@ class Video extends Component {
 
     onLoadedMetadata = () => {
         this.setState({
-            duration: this.vid.duration,
-            videoWidth: this.vid.videoWidth,
-            videoHeight: this.vid.videoHeight,
+            duration: this.noneVid.duration,
+            videoWidth: this.noneVid.videoWidth,
+            videoHeight: this.noneVid.videoHeight,
         })
     }
 
@@ -55,9 +56,13 @@ class Video extends Component {
         })
     }
 
+    onTimeUpdateForScreenshot = () => {
+        this.grabScreenshot();
+    }
+
     grabScreenshot = () => {
         let ctx = this.canvas.getContext("2d");
-        ctx.drawImage(this.vid, 0, 0, this.vid.videoWidth, this.vid.videoHeight);
+        ctx.drawImage(this.noneVid, 0, 0, this.vid.videoWidth, this.vid.videoHeight);
         var img = new Image();
         img.src = this.canvas.toDataURL("image/png");
         this.setState({
@@ -74,7 +79,7 @@ class Video extends Component {
 
     onHotspotOver = (percent) => {
         const currentTime = this.state.duration * (percent / 100)
-        this.vid.currentTime = currentTime;
+        this.noneVid.currentTime = currentTime;
 
         this.setState({
             modalLocation: percent,
@@ -94,10 +99,20 @@ class Video extends Component {
         return (
             <div className="appChild">
                 <video
+                    className="None"
+                    ref={(el) => this.noneVid = el}
+                    onLoadedMetadata={this.onLoadedMetadata}
+                    onTimeUpdate={this.onTimeUpdateForScreenshot}
+                    controls
+                >
+                    <source src={props.src} type={props.type} />
+                    Your browser does not support the video tag.
+                </video>
+                <video
+                    className="video"
                     controls
                     ref={(el => this.vid = el)}
                     onSeeked={this.grabScreenshot}
-                    onLoadedMetadata={this.onLoadedMetadata}
                     onTimeUpdate={this.onTimeUpdate}
                 >
                     <source src={props.src} type={props.type} />

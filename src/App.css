@@ -1,6 +1,6 @@
 .App {
   display: flex;
-  width: 90%;
+  width: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -14,7 +14,7 @@
 
 .appChild{
   overflow-y: auto;
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -68,10 +68,10 @@
 .modal{
   position: absolute;
   width: 150px;
-  height: 100px;
+  height: 110px;
   background-color: #efefef;
   /* display: block; */
-  top: -123px;
+  top: -132px;
   padding: 5px;
   z-index: 5;
 }
@@ -89,6 +89,10 @@
   -webkit-transform:rotate(45deg);
   transform:rotate(45deg);
   z-index: -10;
+}
+.modal p{
+  font-size: 15px;
+  margin-top: -4px
 }
 
 .imgSource {
