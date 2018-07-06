@@ -14,6 +14,22 @@ class Video extends Component {
         }
     }
 
+    onLoadedMetadata = () => {
+        this.setState({
+            duration: this.vid.duration,
+            videoWidth: this.vid.videoWidth,
+            videoHeight: this.vid.videoHeight,
+        })
+    }
+
+    onTimeUpdate = () => {
+        const { duration } = this.state;
+        const progress = ((this.vid.currentTime) / duration) * 100;
+        this.setState({
+            progress
+        })
+    }
+
     grabScreenshot = () => {
         let ctx = this.canvas.getContext("2d");
         ctx.drawImage(this.vid, 0, 0, this.vid.videoWidth, this.vid.videoHeight);
@@ -32,10 +48,17 @@ class Video extends Component {
                     controls
                     ref={(el => this.vid = el)}
                     onSeeked={this.grabScreenshot}
+                    onLoadedMetadata={this.onLoadedMetadata}
+                    onTimeUpdate={this.onTimeUpdate}
                 >
                     <source src={props.src} type={props.type} />
                     Your browser does not support the video tag.
                 </video>
+
+                <div className="storyLine">
+                    <span className="progressColor" style={{ width: `${this.state.progress}%` }}></span>
+                    <span className="progress" style={{ left: `${this.state.progress}%` }}></span>
+                </div>
 
                 <canvas
                     width="1120"
