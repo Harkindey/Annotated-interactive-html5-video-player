@@ -39,6 +39,7 @@ class Video extends Component {
             hotspotDuration: "",
             currentplayer: "vid2",
             playing: false,
+            visibility: ""
         }
     }
 
@@ -68,10 +69,8 @@ class Video extends Component {
     }
 
     onHotspotClick = (percent) => {
-        console.log(this.state);
         const currentTime = this.state.duration * (percent / 100)
         if (!this.state.playing) {
-            console.log("enter")
             if (this.state.currentplayer === "vid1")
                 this.vid1.currentTime = currentTime;
 
@@ -79,9 +78,9 @@ class Video extends Component {
                 this.vid2.currentTime = currentTime;
         } else {
             if (this.state.currentplayer === "vid1") {
-                console.log("work")
                 this.setState({
                     currentplayer: "vid2",
+                    visibility: ""
                 })
                 this.vid2.currentTime = currentTime;
                 this.vid2.play()
@@ -92,9 +91,9 @@ class Video extends Component {
             }
 
             if (this.state.currentplayer === "vid2") {
-                console.log("work2")
                 this.setState({
                     currentplayer: "vid1",
+                    visibility: "opaque"
                 })
                 this.vid1.currentTime = currentTime;
                 this.vid1.play()
@@ -172,7 +171,7 @@ class Video extends Component {
                         Your browser does not support the video tag.
                 </video>
                     <video
-                        className="video2"
+                        className={`video2 ${this.state.visibility}`}
                         name="media"
                         ref={(el) => this.vid2 = el}
                         onTimeUpdate={this.onTimeUpdate}
@@ -228,8 +227,8 @@ class Video extends Component {
                     />
                 </div>
                 <div>
-                    <button onClick={this.Play}>Play</button>
-                    <button onClick={this.Pause}>Pause</button>
+                    <button className="actionButton" onClick={this.Play}>Play</button>
+                    <button className="actionButton" onClick={this.Pause}>Pause</button>
                 </div>
                 <canvas
                     width="1120"
