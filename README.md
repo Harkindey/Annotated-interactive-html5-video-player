@@ -11,3 +11,11 @@ $ cd annotated-interactive-html5-video-player
 $ yarn install or npm install
 $ yarn start or npm start
 ```
+
+###How to use
+* Copy a video file to `public` folder
+* Add the name and type to the component in `App.js`
+```
+    <Video src="./anderson.mp4" typ="video/mp4"></Video>
+```
+* Save and Start server.
