@@ -43,3 +43,12 @@
   border: 1px solid black;
   margin: 10px;
 }
+
+.hotspot{
+  top:0;
+  left:0;
+  position: absolute;
+  top: -5px;
+  fill: red;
+  cursor: pointer;
+}
