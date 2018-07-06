@@ -1,3 +1,17 @@
 .App {
   text-align: center;
 }
+.appChild{
+  overflow-y: auto;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.video{
+  width: 100%;
+  margin-bottom:10px;
+}
+.canvas {
+  border: 1px solid black;
+  margin: 10px;
+}
