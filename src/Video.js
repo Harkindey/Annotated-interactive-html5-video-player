@@ -99,16 +99,6 @@ class Video extends Component {
         return (
             <div className="appChild">
                 <video
-                    className="None"
-                    ref={(el) => this.noneVid = el}
-                    onLoadedMetadata={this.onLoadedMetadata}
-                    onTimeUpdate={this.onTimeUpdateForScreenshot}
-                    controls
-                >
-                    <source src={props.src} type={props.type} />
-                    Your browser does not support the video tag.
-                </video>
-                <video
                     className="video"
                     controls
                     ref={(el => this.vid = el)}
@@ -167,9 +157,19 @@ class Video extends Component {
                     width="1120"
                     height="720"
                     ref={(el => this.canvas = el)}
-                    className="canvas"
+                    className="canvas None"
                 >
                 </canvas>
+                <video
+                    className="None"
+                    ref={(el) => this.noneVid = el}
+                    onLoadedMetadata={this.onLoadedMetadata}
+                    onTimeUpdate={this.onTimeUpdateForScreenshot}
+                    controls
+                >
+                    <source src={props.src} type={props.type} />
+                    Your browser does not support the video tag.
+                </video>
             </div>
         )
     }
