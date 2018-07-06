@@ -22,5 +22,9 @@ $ yarn start or npm start
 
 ###Crossfading
 ```
-"To do a cross-fade, I would need two videos, or I video elements containing the same video. I would have one video in front of the other, and gradually change the opacity of the front one to do the cross-fade. So when the hotspot are clicked, the next video picks it up and the former reduces opacity and delay b4 it resets."
+"To do a cross-fade, I would need two videos, or I video elements containing
+the same video. I would have one video in front of the other, and gradually
+change the opacity of the front one to do the cross-fade. So when the hotspot
+are clicked, the next video picks it up and the former reduces opacity and
+delay b4 it resets."
 ```
