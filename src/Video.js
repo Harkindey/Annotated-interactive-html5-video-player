@@ -37,6 +37,8 @@ class Video extends Component {
             modal: "None",
             imgSrc: "",
             hotspotDuration: "",
+            currentplayer: "vid2",
+            playing: false,
         }
     }
 
@@ -50,10 +52,58 @@ class Video extends Component {
 
     onTimeUpdate = () => {
         const { duration } = this.state;
-        const progress = ((this.vid.currentTime) / duration) * 100;
-        this.setState({
-            progress
-        })
+        if (this.state.currentplayer === "vid1") {
+            const progress = ((this.vid1.currentTime) / duration) * 100;
+            this.setState({
+                progress
+            })
+        }
+
+        if (this.state.currentplayer === "vid2") {
+            const progress = ((this.vid2.currentTime) / duration) * 100;
+            this.setState({
+                progress
+            })
+        }
+    }
+
+    onHotspotClick = (percent) => {
+        console.log(this.state);
+        const currentTime = this.state.duration * (percent / 100)
+        if (!this.state.playing) {
+            console.log("enter")
+            if (this.state.currentplayer === "vid1")
+                this.vid1.currentTime = currentTime;
+
+            if (this.state.currentplayer === "vid2")
+                this.vid2.currentTime = currentTime;
+        } else {
+            if (this.state.currentplayer === "vid1") {
+                console.log("work")
+                this.setState({
+                    currentplayer: "vid2",
+                })
+                this.vid2.currentTime = currentTime;
+                this.vid2.play()
+                setTimeout(() => {
+                    this.vid1.load();
+                    // this.vid1.currentTime = 0;
+                }, 2000)
+            }
+
+            if (this.state.currentplayer === "vid2") {
+                console.log("work2")
+                this.setState({
+                    currentplayer: "vid1",
+                })
+                this.vid1.currentTime = currentTime;
+                this.vid1.play()
+                setTimeout(() => {
+                    this.vid2.load();
+                    //this.vid2.currentTime = 0;
+                }, 3000)
+            }
+        }
     }
 
     onTimeUpdateForScreenshot = () => {
@@ -62,19 +112,14 @@ class Video extends Component {
 
     grabScreenshot = () => {
         let ctx = this.canvas.getContext("2d");
-        ctx.drawImage(this.noneVid, 0, 0, this.vid.videoWidth, this.vid.videoHeight);
+        ctx.drawImage(this.noneVid, 0, 0, this.state.videoWidth, this.state.videoHeight);
         var img = new Image();
         img.src = this.canvas.toDataURL("image/png");
         this.setState({
             imgSrc: this.canvas.toDataURL("image/png"),
             modal: ""
         })
-        img.width = this.vid.videoWidth;
-    }
-
-    onHotspotClick = (percent) => {
-        const currentTime = this.state.duration * (percent / 100)
-        this.vid.currentTime = currentTime;
+        img.width = this.state.videoWidth;
     }
 
     onHotspotOver = (percent) => {
@@ -93,22 +138,52 @@ class Video extends Component {
         })
     }
 
+    Play = () => {
+        if (this.state.currentplayer === "vid1")
+            this.vid1.play();
+
+        if (this.state.currentplayer === "vid2")
+            this.vid2.play();
+    }
+
+    Pause = () => {
+        if (this.state.currentplayer === "vid1")
+            this.vid1.pause();
+
+        if (this.state.currentplayer === "vid2")
+            this.vid2.pause();
+    }
+
 
     render() {
         const { props } = this
         return (
             <div className="appChild">
-                <video
-                    className="video"
-                    controls
-                    ref={(el => this.vid = el)}
-                    onSeeked={this.grabScreenshot}
-                    onTimeUpdate={this.onTimeUpdate}
-                >
-                    <source src={props.src} type={props.type} />
-                    Your browser does not support the video tag.
+                <div className="VID">
+                    <video
+                        className="video1"
+                        ref={(el => this.vid1 = el)}
+                        onSeeked={this.grabScreenshot}
+                        onTimeUpdate={this.onTimeUpdate}
+                        onPlay={() => this.setState({ playing: true })}
+                        onPause={() => this.setState({ playing: false })}
+                    >
+                        <source src={props.src} type={props.type} />
+                        Your browser does not support the video tag.
                 </video>
-
+                    <video
+                        className="video2"
+                        name="media"
+                        ref={(el) => this.vid2 = el}
+                        onTimeUpdate={this.onTimeUpdate}
+                        onSeeked={this.grabScreenshot}
+                        onPlay={() => this.setState({ playing: true })}
+                        onPause={() => this.setState({ playing: false })}
+                    >
+                        <source src={props.src} type={props.type} />
+                        Your browser does not support the video tag.
+                </video>
+                </div>
                 <div className="storyLine">
                     <span className={`modal ${this.state.modal}`} style={{ left: `${this.state.modalLocation}%` }}>
                         <img src={this.state.imgSrc} className="imgSource" alt="hospot" />
@@ -152,7 +227,10 @@ class Video extends Component {
                         hotspotDuration={this.state.hotspotDuration}
                     />
                 </div>
-
+                <div>
+                    <button onClick={this.Play}>Play</button>
+                    <button onClick={this.Pause}>Pause</button>
+                </div>
                 <canvas
                     width="1120"
                     height="720"
