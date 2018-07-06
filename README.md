@@ -28,3 +28,11 @@ change the opacity of the front one to do the cross-fade. So when the hotspot
 are clicked, the next video picks it up and the former reduces opacity and
 delay b4 it resets."
 ```
+
+# Latest Problem :confused:
+
+```
+While CROSSFADING, the volume of enter video should start from 0 --> 1
+while voulume of leaving video should start from 1 --> 0,
+if i can interpolate values in react like in react-native
+```
