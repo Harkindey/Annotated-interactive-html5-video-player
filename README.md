@@ -22,7 +22,7 @@ $ yarn start or npm start
 
 -   Save and Start server.
 
-###Crossfading
+### Crossfading
 
 ```
 "To do a cross-fade, I would need two videos, or I video elements containing
@@ -38,4 +38,11 @@ delay b4 it resets."
 While CROSSFADING, the volume of enter video should start from 0 --> 1
 while voulume of leaving video should start from 1 --> 0,
 would figure out how to interpolate values or create a github issue.
+```
+
+# Updates
+
+```
+Include a better state management system or implement hooks and
+heavy componentization.
 ```
