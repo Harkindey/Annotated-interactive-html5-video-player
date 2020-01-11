@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useRef } from 'react';
 import fancyTimeFormat from './utils';
 import { Hotspot } from './Component/hotspot';
 
@@ -27,11 +27,11 @@ const reducer = (state, action) => {
 
 const Video = props => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const vid1 = useRef(null);
+	const vid2 = useRef(null);
 
 	let canvas = null;
 	let noneVid = null;
-	let vid1 = null;
-	let vid2 = null;
 
 	const onLoadedMetadata = () => {
 		dispatch({
@@ -47,7 +47,7 @@ const Video = props => {
 	const onTimeUpdate = () => {
 		const { duration } = state;
 		if (state.currentplayer === 'vid1') {
-			const progress = (vid1.currentTime / duration) * 100;
+			const progress = (vid1.current.currentTime / duration) * 100;
 			dispatch({
 				type: 'UPDATE_STATE',
 				payload: {
@@ -57,7 +57,7 @@ const Video = props => {
 		}
 
 		if (state.currentplayer === 'vid2') {
-			const progress = (vid2.currentTime / duration) * 100;
+			const progress = (vid2.current.currentTime / duration) * 100;
 			dispatch({
 				type: 'UPDATE_STATE',
 				payload: {
@@ -70,9 +70,11 @@ const Video = props => {
 	const onHotspotClick = percent => {
 		const currentTime = state.duration * (percent / 100);
 		if (!state.playing) {
-			if (state.currentplayer === 'vid1') vid1.currentTime = currentTime;
+			if (state.currentplayer === 'vid1')
+				vid1.current.currentTime = currentTime;
 
-			if (state.currentplayer === 'vid2') vid2.currentTime = currentTime;
+			if (state.currentplayer === 'vid2')
+				vid2.current.currentTime = currentTime;
 		} else {
 			if (state.currentplayer === 'vid1') {
 				dispatch({
@@ -82,11 +84,11 @@ const Video = props => {
 						visibility: '',
 					},
 				});
-				vid2.currentTime = currentTime;
-				vid2.play();
+				vid2.current.currentTime = currentTime;
+				vid2.current.play();
 				setTimeout(() => {
-					vid1.load();
-					// vid1.currentTime = 0;
+					vid1.current.load();
+					// vid1.current.currentTime = 0;
 				}, 2000);
 			}
 
@@ -98,11 +100,11 @@ const Video = props => {
 						visibility: 'opaque',
 					},
 				});
-				vid1.currentTime = currentTime;
-				vid1.play();
+				vid1.current.currentTime = currentTime;
+				vid1.current.play();
 				setTimeout(() => {
-					vid2.load();
-					//vid2.currentTime = 0;
+					vid2.current.load();
+					//vid2.current.currentTime = 0;
 				}, 3000);
 			}
 		}
@@ -149,15 +151,15 @@ const Video = props => {
 	};
 
 	const Play = () => {
-		if (state.currentplayer === 'vid1') vid1.play();
+		if (state.currentplayer === 'vid1') vid1.current.play();
 
-		if (state.currentplayer === 'vid2') vid2.play();
+		if (state.currentplayer === 'vid2') vid2.current.play();
 	};
 
 	const Pause = () => {
-		if (state.currentplayer === 'vid1') vid1.pause();
+		if (state.currentplayer === 'vid1') vid1.current.pause();
 
-		if (state.currentplayer === 'vid2') vid2.pause();
+		if (state.currentplayer === 'vid2') vid2.current.pause();
 	};
 
 	return (
@@ -165,7 +167,7 @@ const Video = props => {
 			<div className="VID">
 				<video
 					className="video1"
-					ref={el => (vid1 = el)}
+					ref={vid1}
 					onSeeked={grabScreenshot}
 					onTimeUpdate={onTimeUpdate}
 					onPlay={() =>
@@ -187,7 +189,7 @@ const Video = props => {
 				<video
 					className={`video2 ${state.visibility}`}
 					name="media"
-					ref={el => (vid2 = el)}
+					ref={vid2}
 					onTimeUpdate={onTimeUpdate}
 					onSeeked={grabScreenshot}
 					onPlay={() =>
