@@ -29,17 +29,21 @@ const Video = props => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const vid1 = useRef(null);
 	const vid2 = useRef(null);
+	const canvas = useRef(null);
+	const noneVid = useRef(null);
 
-	let canvas = null;
-	let noneVid = null;
+	console.log(
+		canvas.current,
+		canvas.current ? canvas.current.getContext : ''
+	);
 
 	const onLoadedMetadata = () => {
 		dispatch({
 			type: 'UPDATE_STATE',
 			payload: {
-				duration: noneVid.duration,
-				videoWidth: noneVid.videoWidth,
-				videoHeight: noneVid.videoHeight,
+				duration: noneVid.current.duration,
+				videoWidth: noneVid.current.videoWidth,
+				videoHeight: noneVid.current.videoHeight,
 			},
 		});
 	};
@@ -115,14 +119,20 @@ const Video = props => {
 	};
 
 	const grabScreenshot = () => {
-		let ctx = canvas.getContext('2d');
-		ctx.drawImage(noneVid, 0, 0, state.videoWidth, state.videoHeight);
+		let ctx = canvas.current.getContext('2d');
+		ctx.drawImage(
+			noneVid.current,
+			0,
+			0,
+			state.videoWidth,
+			state.videoHeight
+		);
 		var img = new Image();
-		img.src = canvas.toDataURL('image/png');
+		img.src = canvas.current.toDataURL('image/png');
 		dispatch({
 			type: 'UPDATE_STATE',
 			payload: {
-				imgSrc: canvas.toDataURL('image/png'),
+				imgSrc: canvas.current.toDataURL('image/png'),
 				modal: '',
 			},
 		});
@@ -131,7 +141,7 @@ const Video = props => {
 
 	const onHotspotOver = percent => {
 		const currentTime = state.duration * (percent / 100);
-		noneVid.currentTime = currentTime;
+		noneVid.current.currentTime = currentTime;
 		dispatch({
 			type: 'UPDATE_STATE',
 			payload: {
@@ -276,12 +286,12 @@ const Video = props => {
 			<canvas
 				width="1120"
 				height="720"
-				ref={el => (canvas = el)}
+				ref={canvas}
 				className="canvas None"
 			/>
 			<video
 				className="None"
-				ref={el => (noneVid = el)}
+				ref={noneVid}
 				onLoadedMetadata={onLoadedMetadata}
 				onTimeUpdate={onTimeUpdateForScreenshot}
 				controls
