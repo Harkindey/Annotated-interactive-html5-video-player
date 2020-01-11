@@ -39,10 +39,3 @@ While CROSSFADING, the volume of enter video should start from 0 --> 1
 while voulume of leaving video should start from 1 --> 0,
 would figure out how to interpolate values or create a github issue.
 ```
-
-# Updates
-
-```
-Include a better state management system or implement hooks and
-heavy componentization.
-```
