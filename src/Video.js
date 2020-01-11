@@ -21,7 +21,7 @@ const reducer = (state, action) => {
 		case 'UPDATE_STATE':
 			return { ...state, ...action.payload };
 		default:
-			return { ...state, ...action.payload };
+			return state;
 	}
 };
 
@@ -31,11 +31,6 @@ const Video = props => {
 	const vid2 = useRef(null);
 	const canvas = useRef(null);
 	const noneVid = useRef(null);
-
-	console.log(
-		canvas.current,
-		canvas.current ? canvas.current.getContext : ''
-	);
 
 	const onLoadedMetadata = () => {
 		dispatch({
