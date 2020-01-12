@@ -17,12 +17,7 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-	switch (action.type) {
-		case 'UPDATE_STATE':
-			return { ...state, ...action.payload };
-		default:
-			return state;
-	}
+	return { ...state, ...action.payload };
 };
 
 const Video = props => {
@@ -34,7 +29,6 @@ const Video = props => {
 
 	const onLoadedMetadata = () => {
 		dispatch({
-			type: 'UPDATE_STATE',
 			payload: {
 				duration: noneVid.current.duration,
 				videoWidth: noneVid.current.videoWidth,
@@ -48,7 +42,6 @@ const Video = props => {
 		if (state.currentplayer === 'vid1') {
 			const progress = (vid1.current.currentTime / duration) * 100;
 			dispatch({
-				type: 'UPDATE_STATE',
 				payload: {
 					progress,
 				},
@@ -58,7 +51,6 @@ const Video = props => {
 		if (state.currentplayer === 'vid2') {
 			const progress = (vid2.current.currentTime / duration) * 100;
 			dispatch({
-				type: 'UPDATE_STATE',
 				payload: {
 					progress,
 				},
@@ -77,7 +69,6 @@ const Video = props => {
 		} else {
 			if (state.currentplayer === 'vid1') {
 				dispatch({
-					type: 'UPDATE_STATE',
 					payload: {
 						currentplayer: 'vid2',
 						visibility: '',
@@ -93,7 +84,6 @@ const Video = props => {
 
 			if (state.currentplayer === 'vid2') {
 				dispatch({
-					type: 'UPDATE_STATE',
 					payload: {
 						currentplayer: 'vid1',
 						visibility: 'opaque',
@@ -125,7 +115,6 @@ const Video = props => {
 		var img = new Image();
 		img.src = canvas.current.toDataURL('image/png');
 		dispatch({
-			type: 'UPDATE_STATE',
 			payload: {
 				imgSrc: canvas.current.toDataURL('image/png'),
 				modal: '',
@@ -138,7 +127,6 @@ const Video = props => {
 		const currentTime = state.duration * (percent / 100);
 		noneVid.current.currentTime = currentTime;
 		dispatch({
-			type: 'UPDATE_STATE',
 			payload: {
 				modalLocation: percent,
 				hotspotDuration: fancyTimeFormat(currentTime).split('.')[0],
@@ -148,7 +136,6 @@ const Video = props => {
 
 	const onHotspotLeave = () => {
 		dispatch({
-			type: 'UPDATE_STATE',
 			payload: {
 				modal: 'None',
 			},
@@ -177,13 +164,11 @@ const Video = props => {
 					onTimeUpdate={onTimeUpdate}
 					onPlay={() =>
 						dispatch({
-							type: 'UPDATE_STATE',
 							payload: { playing: true },
 						})
 					}
 					onPause={() =>
 						dispatch({
-							type: 'UPDATE_STATE',
 							payload: { playing: false },
 						})
 					}
@@ -199,13 +184,11 @@ const Video = props => {
 					onSeeked={grabScreenshot}
 					onPlay={() =>
 						dispatch({
-							type: 'UPDATE_STATE',
 							payload: { playing: true },
 						})
 					}
 					onPause={() =>
 						dispatch({
-							type: 'UPDATE_STATE',
 							payload: { playing: false },
 						})
 					}
